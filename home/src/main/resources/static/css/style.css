@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+  #picture {
+    width: 192px;
+    height: 128px;
+    background-image: url('/image/animal1.jpg');
+    background-size: 192px 128px;
+    background-repeat: no-repeat;
+  }

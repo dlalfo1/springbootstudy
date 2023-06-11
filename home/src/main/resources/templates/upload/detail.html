@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--/* /layout/header.html의 headFrag조각으로 head 태그를 바꾼다. */-->
+<head th:replace="~{/layout/header::headFrag('상세보기')}"></head>
+
+<body>
+
+  <!--/* /layout/header.html의 gnbFrag조각으로 div 태그를 바꾼다. */-->
+  <div th:replace="~{/layout/header::gnbFrag}"></div>
+  
+  <div th:object="${upload}"> <!--/* upload객체(이렇게 안쓰고 기존 사용방식대로 해도 된다. */-->
+    <h1 th:text="|*{uploadNo}번 UPLOAD 게시글|"></h1> <!--/* 시작과 긑에 | 붙여주면 변수와 문자열 더해준다. */-->
+    <ul>
+      <li th:text="|제목 : *{uploadTitle}|"></li> <!--/* *{변수명}으로 값을 가져올 수 있다. */-->
+      <li th:text="|내용 : *{uploadContent}|"></li>
+      <li th:text="|작성일자 : *{createdAt}|"></li>
+      <li th:text="|수정일자 : *{modifiedAt}|"></li>
+    </ul>
+    <form id="frm" method="post">
+      <input type="hidden" name="uploadNo" th:value="*{uploadNo}">
+      <input type="button" value="편집" onclick="fnEditUpload()">
+      <input type="button" value="삭제" onclick="fnRemoveUpload()">
+      <input type="button" name="목록" onclick="fnList()">
+    </form>
+  </div>
+  
+  <hr>
+  
+  <div>
+    <h4>첨부 목록 및 다운로드</h4>
+    <th:block th:if="${#lists.isEmpty(attachList)}">
+      <div>첨부된 파일이 없습니다.</div>
+    </th:block>
+
+    <th:block th:if="${not #lists.isEmpty(attachList)}">
+      <div>
+        <th:block th:each="attach:${attachList}">
+          <div>
+            <a th:href="@{/upload/download.do(attachNo=${attach.attachNo})}">
+              <th:block th:if="${attach.hasThumbnail == 1}">
+                <img th:src="@{/upload/display.do(attachNo=${attach.attachNo})}"> <!-- attachNo를 가진 AttachDTO를 반환하는 mapper가 필요하다. -->
+              </th:block>
+              <th:block th:if="${attach.hasThumbnail == 0}">  
+                <img src="/images/attach1.png" width="50px"> <!--/* 단순경로는 th문법 사용하지 않아도 된다. */-->
+              </th:block>    
+              <span th:text="${attach.originName}"></span>   <!--/* a태그(인라인블럭) 안이므로 span(인라인블럭)태그 사용한다. div태그 X */-->
+            </a>
+          </div>
+        </th:block>
+        <div>
+          <a th:href="@{/upload/downloadAll.do(uploadNo=${upload.uploadNo})}">모두 다운로드</a>
+        </div>
+      </div>
+    </th:block>
+  </div>
+  
+</body>
+</html>

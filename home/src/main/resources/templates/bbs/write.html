@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--/* /layout/header.html의 headFrag조각으로 head 태그를 바꾼다. */-->
+<head th:replace="~{/layout/header::headFrag('BBS 작성')}"></head>
+
+<script>
+  
+  function fnList(){
+    location.href = '/bbs/list.do';   
+  }
+
+</script>
+
+<body>
+
+  <!--/* /layout/header.html의 gnbFrag조각으로 div 태그를 바꾼다. */-->
+  <div th:replace="~{/layout/header::gnbFrag}"></div>
+  
+    <div>
+    <h1>BBS 작성</h1>
+    <form method="post" th:action="@{/bbs/add.do}">
+      <div>
+        <label for="writer">작성자</label>
+        <input id="writer" name="writer" required="required">
+      </div>
+      <div>
+        <label for="title">제목</label>
+        <input id="title" name="title" required="required">
+      </div>
+      <div>
+        <button>작성완료</button>
+        <input type="reset" value="입력초기화">
+        <input type="button" value="목록" onclick="fnList()">
+      </div>    
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--/* 
+  head 태그를 조각(fragment)으로 만든다. 
+    - 조각 이름 : headFrag
+    - 파라미터  : title
+*/-->
+<head th:fragment="headFrag(title)">
+  <meta charset="UTF-8">
+  <title th:text="${title}"></title>
+  <script th:src="@{/js/lib/jquery-3.6.4.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css(ver=1.0)}">
+</head>
+
+<body>
+
+  <!--/* Link URL Expression : @{} (경로 작성할 때 사용) */-->
+  
+  <!--/* 
+  head 태그를 조각(fragment)으로 만든다. 
+    - 조각 이름 : headFrag
+    - 파라미터  : title
+  */-->
+  <div th:fragment="gnbFrag">
+    <div th:if="${#strings.isEmpty(session.loginId)}">
+      <span><a th:href="@{/user/login.html}">로그인</a></span>
+      <span><a th:href="@{/user/agree.html}">회원가입</a></span>
+    </div>
+    <!--/* th:unless의 조건식은 반드시 th:if와 같아야 한다. */-->
+    <div th:unless="${#strings.isEmpty(session.loginId)}">
+      <span><a th:href="@{/user/checkPw.do}" th:text="${session.loginId}"></a>님 반갑습니다</span>
+      <span><a th:href="@{/user/logout.do}">로그아웃</a></span>
+    </div>
+    <ul>
+      <li><a th:href="@{/bbs/list.do}">BBS</a></li>
+    </ul>
+  </div>
+
+  
+</body>
+</html>
